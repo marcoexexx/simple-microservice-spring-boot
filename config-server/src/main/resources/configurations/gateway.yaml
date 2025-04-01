@@ -1,0 +1,32 @@
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: true
+
+server:
+  port: 8222
+
+spring:
+  application:
+    name: gateway
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+
+      routes:
+        - id: students-service
+          uri: lb://STUDENTS
+          predicates:
+            - Path=/api/v1/students/**
+        - id: schools-service
+          uri: lb://SCHOOLS
+          predicates:
+            - Path=/api/v1/schools/**
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
